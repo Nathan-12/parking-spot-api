@@ -17,18 +17,6 @@ public class ParkingSpotModel implements Serializable {
     @Column(nullable = false, unique = true, length = 10)
     private String parkingSpotNumber;
 
-    @Column(nullable = false, unique = true, length = 7)
-    private String licensePlateCar;
-
-    @Column(nullable = false, length = 70)
-    private String brandCar;
-
-    @Column(nullable = false, length = 70)
-    private String modelCar;
-
-    @Column(nullable = false, length = 70)
-    private String colorCar;
-
     @Column(nullable = false)
     private LocalDateTime registrationDate;
 
@@ -40,6 +28,10 @@ public class ParkingSpotModel implements Serializable {
 
     @Column(nullable = false, length = 30)
     private String block;
+    
+    @ManyToOne
+    @JoinColumn(name = "residentModel_id")
+    private ResidentModel residentModel;
 
     public UUID getId() {
         return id;
@@ -55,38 +47,6 @@ public class ParkingSpotModel implements Serializable {
 
     public void setParkingSpotNumber(String parkingSpotNumber) {
         this.parkingSpotNumber = parkingSpotNumber;
-    }
-
-    public String getLicensePlateCar() {
-        return licensePlateCar;
-    }
-
-    public void setLicensePlateCar(String licensePlateCar) {
-        this.licensePlateCar = licensePlateCar;
-    }
-
-    public String getBrandCar() {
-        return brandCar;
-    }
-
-    public void setBrandCar(String brandCar) {
-        this.brandCar = brandCar;
-    }
-
-    public String getModelCar() {
-        return modelCar;
-    }
-
-    public void setModelCar(String modelCar) {
-        this.modelCar = modelCar;
-    }
-
-    public String getColorCar() {
-        return colorCar;
-    }
-
-    public void setColorCar(String colorCar) {
-        this.colorCar = colorCar;
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -120,4 +80,13 @@ public class ParkingSpotModel implements Serializable {
     public void setBlock(String block) {
         this.block = block;
     }
+
+	public ResidentModel getResidentModel() {
+		return residentModel;
+	}
+
+	public void setResidentModel(ResidentModel residentModel) {
+		this.residentModel = residentModel;
+	}
+    
 }
