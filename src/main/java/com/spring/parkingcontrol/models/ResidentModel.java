@@ -14,76 +14,84 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TB_RESIDENT")
-public class ResidentModel implements Serializable{
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID id;
-	
-	@Column(nullable = false, unique = false, length = 100)
-	private String nameResident;
-	
-	@Column(nullable = false, unique = true, length = 20)
-	private String phoneNumber;
-	
-	@Column(nullable = false, unique = true, length = 100)
-	private String email;
-	
-	@OneToMany(mappedBy = "residentModel")
-	private List<ParkingSpotModel> parkingSpotModels;
-	
-	@OneToMany(mappedBy = "residentModel")
-	private List<CarModel> carModels;
+public class ResidentModel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	public UUID getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
+    @Column(nullable = false, length = 100)
+    private String nameResident;
 
-	public String getNameResident() {
-		return nameResident;
-	}
+    @Column(nullable = false, unique = true, length = 20)
+    private String phoneNumber;
 
-	public void setNameResident(String nameResident) {
-		this.nameResident = nameResident;
-	}
+    @Column(nullable = false, unique = true, length = 100)
+    private String email;
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    @OneToMany(mappedBy = "residentModel")
+    private List<ParkingSpotModel> parkingSpotModels;
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    @OneToMany(mappedBy = "residentModel")
+    private List<CarModel> carModels;
 
-	public String getEmail() {
-		return email;
-	}
+    public UUID getId() {
+        return id;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-	public List<ParkingSpotModel> getParkingSpotModels() {
-		return parkingSpotModels;
-	}
+    public String getNameResident() {
+        return nameResident;
+    }
 
-	public void setParkingSpotModels(List<ParkingSpotModel> parkingSpotModels) {
-		this.parkingSpotModels = parkingSpotModels;
-	}
+    public void setNameResident(String nameResident) {
+        this.nameResident = nameResident;
+    }
 
-	public List<CarModel> getCarModels() {
-		return carModels;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setCarModels(List<CarModel> carModels) {
-		this.carModels = carModels;
-	}
-	
-	
-	
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<ParkingSpotModel> getParkingSpotModels() {
+        return parkingSpotModels;
+    }
+
+    public void setParkingSpotModels(List<ParkingSpotModel> parkingSpotModels) {
+        this.parkingSpotModels = parkingSpotModels;
+    }
+
+    public List<CarModel> getCarModels() {
+        return carModels;
+    }
+
+    public void setCarModels(List<CarModel> carModels) {
+        this.carModels = carModels;
+    }
+
+    public ResidentModel() {
+
+    }
+
+    public ResidentModel(UUID id, String nameResident, String phoneNumber, String email) {
+        this.id = id;
+        this.nameResident = nameResident;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 }
