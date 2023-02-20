@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import com.spring.parkingcontrol.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.spring.parkingcontrol.models.ResidentModel;
@@ -30,9 +31,9 @@ public class ResidentService {
         return residentRepository.findById(id);
     }
 
-    public ResidentModel findResidentObjectById(UUID id) {
+    public ResidentModel findResidentObjectById(UUID id) throws Exception {
         Optional<ResidentModel> optionalResidentModel = residentRepository.findById(id);
-        return optionalResidentModel.orElseThrow();
+        return optionalResidentModel.orElseThrow(() -> new ObjectNotFoundException("Resident not found"));
     }
 
     @Transactional

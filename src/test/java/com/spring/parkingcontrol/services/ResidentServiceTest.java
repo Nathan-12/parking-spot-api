@@ -2,6 +2,7 @@ package com.spring.parkingcontrol.services;
 
 import com.spring.parkingcontrol.models.ResidentModel;
 import com.spring.parkingcontrol.repositories.ResidentRepository;
+import com.spring.parkingcontrol.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -9,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ class ResidentServiceTest {
     public static final String NAME_RESIDENT = "Nathan";
     public static final String PHONE_NUMBER = "+5588981045928";
     public static final String EMAIL = "nathanlima.b@gmail.com";
+    public static final int INDEX = 0;
     @InjectMocks
     private ResidentService residentService;
     @Mock
@@ -31,6 +34,7 @@ class ResidentServiceTest {
 
     private ResidentModel residentModel;
     private Optional<ResidentModel> optionalResidentModel;
+    private List<ResidentModel> residentModels;
 
     @BeforeEach
     void setUp() {
@@ -43,11 +47,22 @@ class ResidentServiceTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnAnListOfResidents() {
+        when(residentRepository.findAll()).thenReturn(List.of(residentModel));
+
+        List<ResidentModel> response = residentService.findAll();
+
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals(ResidentModel.class, response.get(INDEX).getClass());
+        assertEquals(ID, response.get(INDEX).getId());
+        assertEquals(NAME_RESIDENT, response.get(INDEX).getNameResident());
+        assertEquals(EMAIL, response.get(INDEX).getEmail());
+        assertEquals(PHONE_NUMBER, response.get(INDEX).getPhoneNumber());
     }
 
     @Test
-    void whenFindByIdThenReturnAnResidentInstance() {
+    void whenFindByIdThenReturnAnResidentInstance() throws Exception {
         when(residentRepository.findById(any(UUID.class))).thenReturn(optionalResidentModel);
 
         ResidentModel response = residentService.findResidentObjectById(ID);
@@ -62,11 +77,24 @@ class ResidentServiceTest {
     }
 
     @Test
+    void whenFindByIdThenReturnAnObjectExceptionNotFound() {
+        when(residentRepository.findById(any(UUID.class))).thenThrow(new ObjectNotFoundException("Resident not found"));
+
+        try {
+            residentService.findResidentObjectById(ID);
+        } catch (Exception e) {
+            assertEquals(ObjectNotFoundException.class, e.getClass());
+            assertEquals("Resident not found", e.getMessage());
+        }
+    }
+
+    @Test
     void delete() {
     }
 
     private void starterResidentModel() {
         residentModel = new ResidentModel(ID, NAME_RESIDENT, PHONE_NUMBER, EMAIL);
         optionalResidentModel = Optional.of(new ResidentModel(ID, NAME_RESIDENT, PHONE_NUMBER, EMAIL));
+        residentModels = List.of(new ResidentModel(ID, NAME_RESIDENT, PHONE_NUMBER, EMAIL));
     }
 }
