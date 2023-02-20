@@ -17,7 +17,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class ResidentServiceTest {
@@ -27,6 +27,7 @@ class ResidentServiceTest {
     public static final String PHONE_NUMBER = "+5588981045928";
     public static final String EMAIL = "nathanlima.b@gmail.com";
     public static final int INDEX = 0;
+    public static final String NOT_FOUND = "Resident not found";
     @InjectMocks
     private ResidentService residentService;
     @Mock
@@ -43,7 +44,17 @@ class ResidentServiceTest {
     }
 
     @Test
-    void save() {
+    void whenCreateThenReturnSuccess() {
+        when(residentRepository.save(any())).thenReturn(residentModel);
+
+        ResidentModel response = residentService.save(residentModel);
+
+        assertNotNull(response);
+        assertEquals(ResidentModel.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME_RESIDENT, response.getNameResident());
+        assertEquals(PHONE_NUMBER, response.getPhoneNumber());
+        assertEquals(EMAIL, response.getEmail());
     }
 
     @Test
@@ -78,18 +89,32 @@ class ResidentServiceTest {
 
     @Test
     void whenFindByIdThenReturnAnObjectExceptionNotFound() {
-        when(residentRepository.findById(any(UUID.class))).thenThrow(new ObjectNotFoundException("Resident not found"));
+        when(residentRepository.findById(any(UUID.class))).thenThrow(new ObjectNotFoundException(NOT_FOUND));
 
         try {
             residentService.findResidentObjectById(ID);
         } catch (Exception e) {
             assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals("Resident not found", e.getMessage());
+            assertEquals(NOT_FOUND, e.getMessage());
         }
     }
 
     @Test
-    void delete() {
+    void whenFindByIdThenReturnAnOptionalResidentInstance() {
+        when(residentRepository.findById(any(UUID.class))).thenReturn(optionalResidentModel);
+
+        Optional<ResidentModel> response = residentService.findResidentById(ID);
+
+        assertNotNull(response);
+        assertEquals(ResidentModel.class, response.get().getClass());
+        assertEquals(ID, response.get().getId());
+    }
+
+    @Test
+    void deleteWithSuccess() {
+        doNothing().when(residentRepository).delete(residentModel);
+        residentService.delete(residentModel);
+        verify(residentRepository, times(1)).delete(residentModel);
     }
 
     private void starterResidentModel() {

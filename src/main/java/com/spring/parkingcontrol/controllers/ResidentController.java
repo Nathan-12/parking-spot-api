@@ -38,7 +38,6 @@ public class ResidentController {
 	public ResponseEntity<Object> saveResident(@RequestBody @Valid ResidentDto residentDto) {
 		var residentModel = new ResidentModel();
 		BeanUtils.copyProperties(residentDto, residentModel);
-		System.out.println(residentDto);
 		return ResponseEntity.status(HttpStatus.OK).body(residentService.save(residentModel));
 	}
 	
