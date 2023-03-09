@@ -88,5 +88,17 @@ public class ParkingSpotModel implements Serializable {
 	public void setResidentModel(ResidentModel residentModel) {
 		this.residentModel = residentModel;
 	}
-    
+
+    public ParkingSpotModel() {
+
+    }
+
+    public ParkingSpotModel(UUID id, String parkingSpotNumber, LocalDateTime registrationDate, String responsibleName, String apartment, String block) {
+        this.id = id;
+        this.parkingSpotNumber = parkingSpotNumber;
+        this.registrationDate = registrationDate;
+        this.responsibleName = responsibleName;
+        this.apartment = apartment;
+        this.block = block;
+    }
 }
